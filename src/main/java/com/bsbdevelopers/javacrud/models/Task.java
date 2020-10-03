@@ -2,11 +2,11 @@ package com.bsbdevelopers.javacrud.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Task {
-    private int taskId;
-    private static AtomicInteger atomicInteger = new AtomicInteger(0);
+    private String taskId = UUID.randomUUID().toString();
     private String taskTitle;
     private enum TaskType{
         Feature, Subtask, Enhancement, Bug, Task;
@@ -30,9 +30,6 @@ public class Task {
         this.taskComments = taskComments;
     }
 
-    public Task() {
-        this.taskId = atomicInteger.incrementAndGet();
-    }
 
     public TaskType getTaskType() {
         return taskType;

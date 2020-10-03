@@ -3,6 +3,7 @@ package com.bsbdevelopers.javacrud.dao;
 import com.bsbdevelopers.javacrud.models.Task;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Projections;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -20,9 +21,14 @@ public class TaskDAO {
 
     public List<Document> listTasks(MongoCollection<Document> taskCollection){
         List<Document> allTasks = new ArrayList<>();
-        allTasks = taskCollection.find().into(allTasks);
+        allTasks = taskCollection.find().projection(Projections.exclude("_id")).into(allTasks);
         return allTasks;
 
+    }
+
+    public String updateTask(Task task, MongoCollection<Document> taskCollection){
+
+        return "Task updating is success";
     }
 
 

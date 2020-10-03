@@ -43,4 +43,13 @@ public class TaskResource {
         return Response.status(Response.Status.OK).entity(allTasks).build();
     }
 
+    //end point to update task
+    @Path("/update-task")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PUT
+    public Response updateTask(Task task){
+        String message = taskDAO.updateTask(task, taskCollection);
+        return Response.status(Response.Status.OK).entity(message).build();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.bsbdevelopers.javacrud.application;
 
+import com.bsbdevelopers.javacrud.application.resources.TaskResource;
 import com.bsbdevelopers.javacrud.application.resources.UserResource;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -14,6 +15,7 @@ public class CRUDApplication extends Application<ApplicationConfig> {
         MongoClient mongo = new MongoClient(applicationConfig.getMongoHost(), applicationConfig.getMongoPort());
         MongoDatabase database = mongo.getDatabase(applicationConfig.getDbName());
         environment.jersey().register(new UserResource(database));
+        environment.jersey().register(new TaskResource(database));
     }
 
     @Override
