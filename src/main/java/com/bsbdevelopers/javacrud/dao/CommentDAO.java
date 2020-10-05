@@ -28,8 +28,11 @@ public class CommentDAO {
         Document taskDocument = taskCollection.find(new Document("taskId", taskId)).projection(Projections.exclude("_id")).first();
         if (taskDocument != null){
             //TODO add the comment id to the comments string list
+            Document updatedTask = new Document();
+            updatedTask.put("$push",new Document().append("taskComments",comment.getCommentID()));
+            taskCollection.updateOne(taskDocument,updatedTask);
         }
-        return "The Comment has been created " + comment.getCommentID();
+        return "The Comment has been created with ID " + comment.getCommentID();
     }
 
 }

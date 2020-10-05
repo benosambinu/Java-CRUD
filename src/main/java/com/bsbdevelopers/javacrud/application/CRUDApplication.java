@@ -1,5 +1,6 @@
 package com.bsbdevelopers.javacrud.application;
 
+import com.bsbdevelopers.javacrud.application.resources.CommentResource;
 import com.bsbdevelopers.javacrud.application.resources.LoginResource;
 import com.bsbdevelopers.javacrud.application.resources.TaskResource;
 import com.bsbdevelopers.javacrud.application.resources.UserResource;
@@ -17,6 +18,7 @@ public class CRUDApplication extends Application<ApplicationConfig> {
         environment.jersey().register(new TaskResource());
         environment.jersey().register(new UserResource());
         environment.jersey().register(new LoginResource());
+        environment.jersey().register(new CommentResource());
         environment.jersey().register(new AuthDynamicFeature(
                 new OAuthCredentialAuthFilter.Builder<UserProfile>()
                         .setAuthenticator(new APIAuthenticator())
