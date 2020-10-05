@@ -23,12 +23,11 @@ public class TaskDAO {
     public String addTask(String authHeader, Task task) {
         Gson gson = new Gson();
         String sessionId = authHeader.split("Bearer ")[1];
-        Document query = new Document("sessionId", sessionId);
-        Document dbUser = allowedUsers.find(query).projection(Projections.exclude("_id")).first();
+        Document dbUser = allowedUsers.find(new Document("sessionId", sessionId)).projection(Projections.exclude("_id")).first();
         String JsonUser = dbUser.toJson();
         UserProfile userProfile = gson.fromJson(JsonUser, UserProfile.class);
+        task.setReporter(userProfile.getUserEmail());
         Document document = Document.parse(gson.toJson(task));
-        document.put("reporter", userProfile.getUserEmail());
         taskCollection.insertOne(document);
         return "The task has been created " + task.getTaskId();
 
@@ -38,12 +37,10 @@ public class TaskDAO {
         Gson gson = new Gson();
         Document taskToBeUpdated = Document.parse(gson.toJson(task));
         String sessionId = authHeader.split("Bearer ")[1];
-        Document query = new Document("sessionId", sessionId);
-        Document dbUser = allowedUsers.find(query).projection(Projections.exclude("_id")).first();
+        Document dbUser = allowedUsers.find(new Document("sessionId", sessionId)).projection(Projections.exclude("_id")).first();
         String JsonUser = dbUser.toJson();
         UserProfile userProfile = gson.fromJson(JsonUser, UserProfile.class);
-        Document taskQuery = new Document("taskId", task.getTaskId());
-        Document document = taskCollection.find(taskQuery).projection(Projections.exclude("_id")).first();
+        Document document = taskCollection.find(new Document("taskId", task.getTaskId())).projection(Projections.exclude("_id")).first();
         if(document != null) {
             String JsonTask = document.toJson();
             Task objTask = gson.fromJson(JsonTask, Task.class);
@@ -60,11 +57,7 @@ public class TaskDAO {
         else{
             return "There is no task with this id";
         }
-
-
     }
-
-
 
     public List<Document> listTasks(){
         List<Document> allTasks = new ArrayList<>();
