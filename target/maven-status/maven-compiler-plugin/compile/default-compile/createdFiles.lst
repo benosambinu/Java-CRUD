@@ -1,9 +1,0 @@
-com/bsbdevelopers/javacrud/application/CRUDApplication.class
-com/bsbdevelopers/javacrud/models/User.class
-com/bsbdevelopers/javacrud/models/Task.class
-com/bsbdevelopers/javacrud/models/Comment.class
-com/bsbdevelopers/javacrud/models/Task$TaskType.class
-com/bsbdevelopers/javacrud/application/ApplicationConfig.class
-com/bsbdevelopers/javacrud/application/resources/UserResource.class
-com/bsbdevelopers/javacrud/models/User$UserRole.class
-com/bsbdevelopers/javacrud/dao/UserDAO.class
