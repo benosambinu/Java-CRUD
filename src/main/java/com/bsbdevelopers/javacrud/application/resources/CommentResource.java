@@ -22,4 +22,13 @@ public class CommentResource {
         return Response.status(Response.Status.OK).entity(response).build();
     }
 
+    @Path("/delete-comment")
+    @PermitAll
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteComment(@HeaderParam("Authorization") String authHeader, @QueryParam("commentID") String commentID){
+        String response = commentDAO.deleteComment(authHeader, commentID);
+        return Response.status(Response.Status.OK).entity(response).build();
+    }
+
 }

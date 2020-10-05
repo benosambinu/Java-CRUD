@@ -19,20 +19,27 @@ public class CommentDAO {
     public String addComment(String authHeader, String taskId, Comment comment){
         Gson gson = new Gson();
         String sessionId = authHeader.split("Bearer ")[1];
-        Document dbUser = allowedUsers.find(new Document("sessionId", sessionId)).projection(Projections.exclude("_id")).first();
-        String JsonUser = dbUser.toJson();
-        UserProfile userProfile = gson.fromJson(JsonUser, UserProfile.class);
-        comment.setCommentedPersonID(userProfile.getUserEmail());
-        Document document = Document.parse(gson.toJson(comment));
-        commentCollection.insertOne(document);
         Document taskDocument = taskCollection.find(new Document("taskId", taskId)).projection(Projections.exclude("_id")).first();
         if (taskDocument != null){
-            //TODO add the comment id to the comments string list
+            Document dbUser = allowedUsers.find(new Document("sessionId", sessionId)).projection(Projections.exclude("_id")).first();
+            String JsonUser = dbUser.toJson();
+            UserProfile userProfile = gson.fromJson(JsonUser, UserProfile.class);
+            comment.setCommentedPersonID(userProfile.getUserEmail());
+            Document document = Document.parse(gson.toJson(comment));
+            commentCollection.insertOne(document);
             Document updatedTask = new Document();
             updatedTask.put("$push",new Document().append("taskComments",comment.getCommentID()));
             taskCollection.updateOne(taskDocument,updatedTask);
+            return "The Comment has been created with ID " + comment.getCommentID();
         }
-        return "The Comment has been created with ID " + comment.getCommentID();
+        return "The given Task id is not present in the database";
+
+    }
+
+    public String deleteComment(String authHeader, String commentID){
+
+        //TODO
+        return "The comment has been deleted";
     }
 
 }
