@@ -3,7 +3,6 @@ package com.bsbdevelopers.javacrud.models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Task {
     private String taskId = UUID.randomUUID().toString();
@@ -19,8 +18,12 @@ public class Task {
     private String dueDate;
     private String originalEstimate;
     private String assignee;
-    private String Reporter;
+    private String reporter;
     private List<Comment> taskComments = new ArrayList<Comment>();
+
+    public String getTaskId() {
+        return taskId;
+    }
 
     public List<Comment> getTaskComments() {
         return taskComments;
@@ -105,11 +108,11 @@ public class Task {
     }
 
     public String getReporter() {
-        return Reporter;
+        return reporter;
     }
 
     public void setReporter(String reporter) {
-        Reporter = reporter;
+        this.reporter = reporter;
     }
 
 }

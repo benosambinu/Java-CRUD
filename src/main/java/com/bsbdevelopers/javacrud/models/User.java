@@ -16,8 +16,8 @@ public class User {
         return userID;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public String getUserRole() {
+        return userRole.toString();
     }
 
     public void setUserRole(UserRole userRole) {

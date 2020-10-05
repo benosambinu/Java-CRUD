@@ -9,14 +9,14 @@ public class ApplicationConfig extends Configuration {
 
     @JsonProperty
     @NotEmpty
-    public String mongoHost;
+    public String mongoHost = "localhost";
 
     @JsonProperty
-    public int mongoPort;
+    public int mongoPort = 27017;
 
     @JsonProperty
     @NotEmpty
-    public String dbName;
+    public String dbName = "projectmanagement";
 
     public String getMongoHost() {
         return mongoHost;

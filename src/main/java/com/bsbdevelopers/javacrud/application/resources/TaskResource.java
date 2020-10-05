@@ -3,11 +3,8 @@ package com.bsbdevelopers.javacrud.application.resources;
 
 import com.bsbdevelopers.javacrud.dao.TaskDAO;
 import com.bsbdevelopers.javacrud.models.Task;
-import com.bsbdevelopers.javacrud.models.User;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,18 +15,14 @@ import java.util.List;
 
 public class TaskResource {
     public TaskDAO taskDAO = new TaskDAO();
-    private final MongoCollection<Document> taskCollection;
-
-    public TaskResource(MongoDatabase database) {
-        this.taskCollection = database.getCollection("Task");
-    }
 
     //end point to add task
     @Path("/add-task")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addTask(Task task){
-        String message = taskDAO.addTask(task,taskCollection);
+    @PermitAll
+    public Response addTask(@HeaderParam("Authorization") String authHeader, Task task){
+        String message = taskDAO.addTask(authHeader, task);
         return Response.status(Response.Status.OK).entity(message).build();
     }
 
@@ -37,9 +30,10 @@ public class TaskResource {
     @Path("/list-tasks")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
+    @PermitAll
     public Response listTasks(){
         List<Document> allTasks;
-        allTasks = taskDAO.listTasks(taskCollection);
+        allTasks = taskDAO.listTasks();
         return Response.status(Response.Status.OK).entity(allTasks).build();
     }
 
@@ -47,8 +41,9 @@ public class TaskResource {
     @Path("/update-task")
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
-    public Response updateTask(Task task){
-        String message = taskDAO.updateTask(task, taskCollection);
+    @PermitAll
+    public Response updateTask(@HeaderParam("Authorization") String authHeader,Task task){
+        String message = taskDAO.updateTask(authHeader, task);
         return Response.status(Response.Status.OK).entity(message).build();
     }
 

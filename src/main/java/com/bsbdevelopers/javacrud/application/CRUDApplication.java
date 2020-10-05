@@ -1,21 +1,32 @@
 package com.bsbdevelopers.javacrud.application;
 
+import com.bsbdevelopers.javacrud.application.resources.LoginResource;
 import com.bsbdevelopers.javacrud.application.resources.TaskResource;
 import com.bsbdevelopers.javacrud.application.resources.UserResource;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.bsbdevelopers.javacrud.models.UserProfile;
 import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.bson.Document;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 public class CRUDApplication extends Application<ApplicationConfig> {
-    public void run(ApplicationConfig applicationConfig, Environment environment) throws Exception {
-        MongoClient mongo = new MongoClient(applicationConfig.getMongoHost(), applicationConfig.getMongoPort());
-        MongoDatabase database = mongo.getDatabase(applicationConfig.getDbName());
-        environment.jersey().register(new UserResource(database));
-        environment.jersey().register(new TaskResource(database));
+    public void run(ApplicationConfig applicationConfig, Environment environment) {
+        environment.jersey().register(new TaskResource());
+        environment.jersey().register(new UserResource());
+        environment.jersey().register(new LoginResource());
+        environment.jersey().register(new AuthDynamicFeature(
+                new OAuthCredentialAuthFilter.Builder<UserProfile>()
+                        .setAuthenticator(new APIAuthenticator())
+                        .setAuthorizer(new APIAuthorizer())
+                        .setPrefix("Bearer")
+                        .buildAuthFilter()));
+        environment.jersey().register(RolesAllowedDynamicFeature.class);
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(UserProfile.class));
+
+
     }
 
     @Override
