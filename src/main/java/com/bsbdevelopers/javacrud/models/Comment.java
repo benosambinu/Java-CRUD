@@ -7,6 +7,15 @@ public class Comment {
     private String commentedPersonID;
     private String message;
     private String lastUpdated;
+    private String commentedTaskId;
+
+    public String getCommentedTaskId() {
+        return commentedTaskId;
+    }
+
+    public void setCommentedTaskId(String commentedTaskId) {
+        this.commentedTaskId = commentedTaskId;
+    }
 
     public String getCommentID() {
         return commentID;
